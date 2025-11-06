@@ -46,7 +46,7 @@ const teamMembers: TeamMember[] = [
 function TeamCard({ member }: { member: TeamMember }) {
   return (
     <div className="relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group">
-      <div className="relative h-64 sm:h-72 md:h-110">
+      <div className="relative h-110">
         <Image
           src={member.image}
           alt={member.name}

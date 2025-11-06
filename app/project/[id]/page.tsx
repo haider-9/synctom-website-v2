@@ -152,7 +152,9 @@ export default function ProjectDetail() {
                 </div>
                 <div className="space-y-3">
                   {tech.tools.map((tool, index) => {
-                    const IconComponent = SiIcons[tool.icon];
+                    const IconComponent = (SiIcons as any)[
+                      tool.icon as keyof typeof SiIcons
+                    ];
                     return (
                       <div key={index} className="flex items-center space-x-3">
                         <div
@@ -201,7 +203,6 @@ export default function ProjectDetail() {
                 key={index}
                 className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
               >
-               
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>

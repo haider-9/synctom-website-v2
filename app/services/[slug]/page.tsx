@@ -27,10 +27,13 @@ import {
   SiPython,
   SiTensorflow,
   SiOpenai,
+  SiGoogleanalytics,
+  SiFacebook,
+  SiInstagram,
+  SiTiktok,
 } from "react-icons/si";
 
-// Service data
-const services = {
+export const services = {
   "web-development": {
     title: "Web Development",
     description:
@@ -61,6 +64,7 @@ const services = {
       "Deployment & Launch",
     ],
   },
+
   "ui-ux-design": {
     title: "UI/UX Design",
     description:
@@ -91,6 +95,7 @@ const services = {
       "Visual Design & Testing",
     ],
   },
+
   "app-development": {
     title: "App Development",
     description:
@@ -121,6 +126,7 @@ const services = {
       "App Store Deployment",
     ],
   },
+
   "graphic-design": {
     title: "Graphic Design",
     description:
@@ -159,6 +165,7 @@ const services = {
       "Refinement & Delivery",
     ],
   },
+
   branding: {
     title: "Branding",
     description:
@@ -181,18 +188,9 @@ const services = {
         color: "text-red-600",
       },
       { name: "Figma", icon: SiFigma, color: "text-purple-500" },
-      { name: "Brand Guidelines Tools", icon: SiFigma, color: "text-blue-500" },
-      {
-        name: "Style Guides",
-        icon: SiAdobeillustrator,
-        color: "text-orange-600",
-      },
+      { name: "Style Guides", icon: SiAdobeillustrator, color: "text-orange-600" },
       { name: "Typography", icon: SiAdobeindesign, color: "text-pink-600" },
-      {
-        name: "Color Theory",
-        icon: SiAdobecreativecloud,
-        color: "text-green-500",
-      },
+      { name: "Color Theory", icon: SiAdobecreativecloud, color: "text-green-500" },
     ],
     process: [
       "Brand Discovery",
@@ -201,6 +199,7 @@ const services = {
       "Implementation & Guidelines",
     ],
   },
+
   "ai-automation": {
     title: "AI Automation",
     description:
@@ -220,11 +219,7 @@ const services = {
       { name: "Python", icon: SiPython, color: "text-blue-500" },
       { name: "TensorFlow", icon: SiTensorflow, color: "text-orange-500" },
       { name: "OpenAI", icon: SiOpenai, color: "text-green-600" },
-      {
-        name: "Machine Learning",
-        icon: SiTensorflow,
-        color: "text-purple-600",
-      },
+      { name: "Machine Learning", icon: SiTensorflow, color: "text-purple-600" },
       {
         name: "Natural Language Processing",
         icon: SiPython,
@@ -237,6 +232,36 @@ const services = {
       "AI Solution Design",
       "Development & Training",
       "Integration & Optimization",
+    ],
+  },
+
+  "digital-marketing": {
+    title: "Digital Marketing",
+    description:
+      "Grow your online presence through data-driven marketing strategies and impactful campaigns.",
+    longDescription:
+      "Our digital marketing experts craft tailored strategies to increase your visibility, engagement, and conversions. From SEO and content marketing to social media and paid ads, we help you grow sustainably in the digital world.",
+    image: "/services/services(6).png",
+    features: [
+      "SEO & SEM",
+      "Content Marketing",
+      "Social Media Management",
+      "Email Marketing",
+      "Paid Advertising (PPC)",
+      "Analytics & Optimization",
+    ],
+    technologies: [
+      { name: "Google Analytics", icon: SiGoogleanalytics, color: "text-orange-500" },
+      { name: "Facebook Ads", icon: SiFacebook, color: "text-blue-600" },
+      { name: "Instagram", icon: SiInstagram, color: "text-pink-500" },
+      { name: "TikTok Ads", icon: SiTiktok, color: "text-gray-800" },
+      { name: "SEO Tools", icon: SiGoogleanalytics, color: "text-green-600" },
+    ],
+    process: [
+      "Market Research",
+      "Strategy Development",
+      "Campaign Execution",
+      "Tracking & Optimization",
     ],
   },
 };

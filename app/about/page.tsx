@@ -6,12 +6,17 @@ import { Linkedin } from "lucide-react";
 import CTASection from "@/components/cta-section";
 
 export const metadata: Metadata = {
-  title: "About Us | Synctom - Building Digital Solutions That Empower Businesses",
-  description: "Learn about Synctom's 12+ years of excellence in digital innovation. Meet our expert team and discover our mission to create impactful digital solutions.",
-  keywords: "about synctom, digital agency, web development team, UI/UX design experts, software development company",
+  title:
+    "About Us | Synctom - Building Digital Solutions That Empower Businesses",
+  description:
+    "Learn about Synctom's 12+ years of excellence in digital innovation. Meet our expert team and discover our mission to create impactful digital solutions.",
+  keywords:
+    "about synctom, digital agency, web development team, UI/UX design experts, software development company",
   openGraph: {
-    title: "About Us | Synctom - Building Digital Solutions That Empower Businesses",
-    description: "Learn about Synctom's 12+ years of excellence in digital innovation and meet our expert team.",
+    title:
+      "About Us | Synctom - Building Digital Solutions That Empower Businesses",
+    description:
+      "Learn about Synctom's 12+ years of excellence in digital innovation and meet our expert team.",
     type: "website",
   },
 };
@@ -31,8 +36,7 @@ const teamMembers: TeamMember[] = [
     name: "Syed Ali Taqi",
     position: "Board Member",
     email: "alitaqi@syncton.com",
-    image:
-      "/teams/alitaqi.jpg",
+    image: "/teams/alitaqi.jpg",
     linkedin: "https://www.linkedin.com/in/syed-ali-taqi-hussnain/",
   },
   {
@@ -40,55 +44,54 @@ const teamMembers: TeamMember[] = [
     name: "Mehtab Khan Afridi",
     position: "Board Member",
     email: "mkafridi@syncton.com",
-    image:
-      "/teams/mehtab.png",
-      linkedin:'https://www.linkedin.com/in/mehtab-khan-852a3928b/'
+    image: "/teams/mehtab.png",
+    linkedin: "https://www.linkedin.com/in/mehtab-khan-852a3928b/",
   },
   {
     id: 3,
     name: "Syed Ain Ali",
     position: "Board Member",
     email: "ainali@syncton.com",
-    image:"/teams/ain.jpg",
-      linkedin:'https://www.linkedin.com/in/ain-ali-a0a86b31b/'
+    image: "/teams/ain.jpg",
+    linkedin: "https://www.linkedin.com/in/ain-ali-a0a86b31b/",
   },
   {
-    id:4,
-    name:'Haider Ahmad',
-    position:'Web Developer',
-    email:'haiderahmad352@gmail.com',
-    image:'/teams/haider.jpg',
-    linkedin:'https://www.linkedin.com/in/haider-ahmad-439317164/'
+    id: 4,
+    name: "Haider Ahmad",
+    position: "Web Developer",
+    email: "haiderahmad352@gmail.com",
+    image: "/teams/haider.jpg",
+    linkedin: "https://www.linkedin.com/in/haider-ahmad-439317164/",
   },
   {
-    id:5,
-    name:'Sharoon Shaleem',
-    position:'Web Developer',
-    email:'ssharoon166@gmail.com',
-    image:'/teams/sharoon.jpg',
-    linkedin:'https://www.linkedin.com/in/sharoon-shaleem-0a7a85226/'
+    id: 5,
+    name: "Sharoon Shaleem",
+    position: "Web Developer",
+    email: "ssharoon166@gmail.com",
+    image: "/teams/sharoon.jpg",
+    linkedin: "https://www.linkedin.com/in/sharoon-shaleem-0a7a85226/",
   },
   {
-    id:6,
-    name:'Raja Muhammad Zubair',
-    position:"UI/UX Designer",
-    email:'rajazubair5626573@gmail.com',
-    image:'/teams/raja.png',
-    linkedin:'https://www.linkedin.com/in/raja-zubair-664066294/'
+    id: 6,
+    name: "Raja Muhammad Zubair",
+    position: "UI/UX Designer",
+    email: "rajazubair5626573@gmail.com",
+    image: "/teams/raja.png",
+    linkedin: "https://www.linkedin.com/in/raja-zubair-664066294/",
   },
   {
-    id:7,
-    name:'Ehtasham Ul Haq',
-    position:"Web Developer",
-    email:"ehteshamali@gmail.com",
-    image:'/teams/ehtasham.jpg',
-    linkedin:'https://www.linkedin.com/in/ehtasham-ul-haq-86069b274/'
-    }
+    id: 7,
+    name: "Ehtasham Ul Haq",
+    position: "Web Developer",
+    email: "ehteshamali@gmail.com",
+    image: "/teams/ehtasham.jpg",
+    linkedin: "https://www.linkedin.com/in/ehtasham-ul-haq-86069b274/",
+  },
 ];
 function TeamCard({ member }: { member: TeamMember }) {
   return (
     <div className="relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group">
-      <div className="relative h-64 sm:h-72 md:h-80">
+      <div className="relative h-110">
         <Image
           src={member.image}
           alt={member.name}
@@ -99,8 +102,8 @@ function TeamCard({ member }: { member: TeamMember }) {
 
         {/* LinkedIn Icon */}
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
-          <Link 
-            href="https://www.linkedin.com/company/synctom/" 
+          <Link
+            href="https://www.linkedin.com/company/synctom/"
             target="_blank"
             rel="noopener noreferrer"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
@@ -112,7 +115,9 @@ function TeamCard({ member }: { member: TeamMember }) {
         {/* Member Info */}
         <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-white">
           <h3 className="text-lg sm:text-xl font-bold mb-1">{member.name}</h3>
-          <p className="text-white/90 text-xs sm:text-sm mb-1 sm:mb-2">{member.position}</p>
+          <p className="text-white/90 text-xs sm:text-sm mb-1 sm:mb-2">
+            {member.position}
+          </p>
           <p className="text-white/70 text-xs">{member.email}</p>
         </div>
       </div>
@@ -131,7 +136,9 @@ export default function About() {
             {/* Badge */}
             <div className="inline-block">
               <span className="px-4 sm:px-6 py-2 sm:py-3 bg-clip-text text-transparent bg-linear-to-r from-[#0383CA] to-[#EF3A61] rounded-full border-2 border-gray-200 bg-white">
-                <span className="font-semibold text-sm sm:text-base">About Synctom</span>
+                <span className="font-semibold text-sm sm:text-base">
+                  About Synctom
+                </span>
               </span>
             </div>
 
@@ -336,7 +343,8 @@ export default function About() {
             <p className="text-sm sm:text-base text-gray-600 max-w-xs sm:max-w-2xl md:max-w-3xl mx-auto px-4 sm:px-0">
               Our multidisciplinary team blends creativity, strategy, and
               technology to craft digital products that make a difference. Each
-              member brings a unique skill set and shared passion for innovation.
+              member brings a unique skill set and shared passion for
+              innovation.
             </p>
           </div>
 
