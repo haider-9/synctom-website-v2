@@ -12,7 +12,7 @@ export default function SynctomLanding() {
   }, []);
 
   return (
-    <div className="overflow-hidden relative bg-white">
+    <div className="overflow-hidden relative">
      
       {/* Animated Floating Icons with Flower Bloom Effect - Responsive */}
       <motion.div

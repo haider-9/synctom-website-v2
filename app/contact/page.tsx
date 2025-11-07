@@ -15,13 +15,11 @@ export const metadata: Metadata = {
   },
 };
 
-import CTASection from "@/components/cta-section";
 
 export default function Contact() {
   return (
     <div className="min-h-screen">
       <ContactClient />
-      <CTASection />
     </div>
   );
 }

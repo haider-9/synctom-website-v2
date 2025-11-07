@@ -139,13 +139,30 @@
   }
 }
 
-/* In globals.css */
-html {
-  overflow-y: scroll;
+/* Accordion animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
 }
-body[data-scroll-locked] {
-  margin-right: 0 !important;
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }
+
+
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -154,6 +171,14 @@ body[data-scroll-locked] {
 .animate-float-delayed {
   animation: float-delayed 8s ease-in-out infinite;
   animation-delay: 2s;
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.3s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.3s ease-out;
 }
 /* Custom Text Selection */
 ::selection {

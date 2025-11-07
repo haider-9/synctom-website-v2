@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Synctom - Digital Solutions That Drive Innovation",
     description: "Transform your business with Synctom's expert web development, mobile apps, UI/UX design, and digital solutions.",
     type: "website",
-    url: "https://synctom.com",
+    url: "https://www.synctom.com",
   },
 };
 
