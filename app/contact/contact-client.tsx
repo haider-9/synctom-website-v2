@@ -3,17 +3,17 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Plus, Minus } from "lucide-react";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import CTASection from "@/components/cta-section";
 
 export default function ContactClient() {
-  const [openFAQ, setOpenFAQ] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     inquiryPurpose: "",
     description: "",
@@ -23,10 +23,6 @@ export default function ContactClient() {
     phoneNumber: "",
     message: "",
   });
-
-  const toggleFAQ = (faqId: string) => {
-    setOpenFAQ(openFAQ === faqId ? null : faqId);
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -54,23 +50,40 @@ export default function ContactClient() {
           {/* Content */}
           <div className="text-center space-y-6 sm:space-y-8">
             {/* Badge */}
-            <div className="inline-block">
+            <motion.div
+              className="inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               <span className="px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 bg-clip-text text-transparent bg-linear-to-r from-[#0383CA] to-[#EF3A61] border-gray-200 bg-white">
-                <span className="font-semibold text-sm sm:text-base">Contact Us</span>
+                <span className="font-semibold text-sm sm:text-base">
+                  Contact Us
+                </span>
               </span>
-            </div>
+            </motion.div>
 
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-0">
+            <motion.h1
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-0"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               Let's Build Something Great Together
-            </h1>
+            </motion.h1>
 
             {/* Description */}
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-xs sm:max-w-2xl md:max-w-3xl mx-auto px-4 sm:px-0">
+            <motion.p
+              className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-xs sm:max-w-2xl md:max-w-3xl mx-auto px-4 sm:px-0"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               We'd love to hear about your project or idea. Whether you're
               looking for design, development, or a complete digital solution,
               our team is ready to help you get started.
-            </p>
+            </motion.p>
           </div>
         </div>
       </div>
@@ -93,7 +106,9 @@ export default function ContactClient() {
                 />
               </div>
               <div>
-                <p className="text-sm sm:text-base text-gray-600">0301 1234567</p>
+                <p className="text-sm sm:text-base text-gray-600">
+                  0301 1234567
+                </p>
               </div>
             </div>
 
@@ -109,7 +124,9 @@ export default function ContactClient() {
                 />
               </div>
               <div>
-                <p className="text-sm sm:text-base text-gray-600">help@synctom.com</p>
+                <p className="text-sm sm:text-base text-gray-600">
+                  help@synctom.com
+                </p>
               </div>
             </div>
 
@@ -125,7 +142,9 @@ export default function ContactClient() {
                 />
               </div>
               <div>
-                <p className="text-sm sm:text-base text-gray-600 mt-2">Sector I-9/4, Islamabad</p>
+                <p className="text-sm sm:text-base text-gray-600 mt-2">
+                  Sector I-9/4, Islamabad
+                </p>
               </div>
             </div>
           </div>
@@ -390,139 +409,76 @@ export default function ContactClient() {
                   <Button className="bg-gradient-to-r from-[#0383CA] to-pink-500 text-white">
                     Getting Started
                   </Button>
-                  <Button variant="outline">Pricing & Budget</Button>
+                  <Button variant="gradient">Pricing & Budget</Button>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button variant="outline">Project Process</Button>
-                  <Button variant="outline">Technical & Support</Button>
+                  <Button variant="gradient">Project Process</Button>
+                  <Button variant="gradient">Technical & Support</Button>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button variant="outline">Revisions & Delivery</Button>
-                  <Button variant="outline">Communication</Button>
+                  <Button variant="gradient">Revisions & Delivery</Button>
+                  <Button variant="gradient">Communication</Button>
                 </div>
               </div>
             </div>
 
             {/* Right Column - FAQ Items */}
-            <div className="space-y-4">
-              {/* FAQ Item 1 */}
-              <Collapsible
-                open={openFAQ === "faq1"}
-                onOpenChange={() => toggleFAQ("faq1")}
-              >
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-4 text-left border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <span className="font-medium text-gray-900">
+            <div>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline">
                     How long does it take to start a new project?
-                  </span>
-                  {openFAQ === "faq1" ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
-                  <p className="text-gray-600">
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600">
                     Once we finalize the project scope, we typically start
                     within 3-7 business days depending on availability.
-                  </p>
-                </CollapsibleContent>
-              </Collapsible>
+                  </AccordionContent>
+                </AccordionItem>
 
-              {/* FAQ Item 2 */}
-              <Collapsible
-                open={openFAQ === "faq2"}
-                onOpenChange={() => toggleFAQ("faq2")}
-              >
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-4 text-left border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <span className="font-medium text-gray-900">
+                <AccordionItem value="item-2">
+                  <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline">
                     What is the cost to design or develop a project?
-                  </span>
-                  {openFAQ === "faq2" ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
-                  <p className="text-gray-600">
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600">
                     Project costs vary based on scope, complexity, and timeline.
                     We provide detailed quotes after understanding your specific
                     requirements during our initial consultation.
-                  </p>
-                </CollapsibleContent>
-              </Collapsible>
+                  </AccordionContent>
+                </AccordionItem>
 
-              {/* FAQ Item 3 */}
-              <Collapsible
-                open={openFAQ === "faq3"}
-                onOpenChange={() => toggleFAQ("faq3")}
-              >
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-4 text-left border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <span className="font-medium text-gray-900">
+                <AccordionItem value="item-3">
+                  <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline">
                     Do you work with international clients?
-                  </span>
-                  {openFAQ === "faq3" ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
-                  <p className="text-gray-600">
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600">
                     Yes, we work with clients globally. We have experience
                     managing projects across different time zones and provide
                     flexible communication schedules.
-                  </p>
-                </CollapsibleContent>
-              </Collapsible>
+                  </AccordionContent>
+                </AccordionItem>
 
-              {/* FAQ Item 4 */}
-              <Collapsible
-                open={openFAQ === "faq4"}
-                onOpenChange={() => toggleFAQ("faq4")}
-              >
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-4 text-left border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <span className="font-medium text-gray-900">
+                <AccordionItem value="item-4">
+                  <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline">
                     Do you provide ongoing maintenance and support?
-                  </span>
-                  {openFAQ === "faq4" ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
-                  <p className="text-gray-600">
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600">
                     Yes, we offer comprehensive maintenance packages and ongoing
                     support to ensure your project continues to perform
                     optimally after launch.
-                  </p>
-                </CollapsibleContent>
-              </Collapsible>
+                  </AccordionContent>
+                </AccordionItem>
 
-              {/* FAQ Item 5 */}
-              <Collapsible
-                open={openFAQ === "faq5"}
-                onOpenChange={() => toggleFAQ("faq5")}
-              >
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-4 text-left border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <span className="font-medium text-gray-900">
+                <AccordionItem value="item-5">
+                  <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline">
                     Can you build both design and development?
-                  </span>
-                  {openFAQ === "faq5" ? (
-                    <Minus className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
-                  <p className="text-gray-600">
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600">
                     Absolutely! We offer end-to-end services including UI/UX
                     design, web development, mobile app development, and
                     complete digital solutions.
-                  </p>
-                </CollapsibleContent>
-              </Collapsible>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               {/* Still have questions section */}
               <div className="mt-8 p-6 rounded-lg">
@@ -533,7 +489,7 @@ export default function ContactClient() {
                   Contact our support team and we'll make sure everything is
                   clear and helpful.
                 </p>
-                <Button asChild variant={'default'}>
+                <Button asChild variant={"default"}>
                   <Link href="/contact">Contact Support</Link>
                 </Button>
               </div>
@@ -541,7 +497,7 @@ export default function ContactClient() {
           </div>
         </div>
       </div>
-      <CTASection/>
+      <CTASection />
     </div>
   );
 }

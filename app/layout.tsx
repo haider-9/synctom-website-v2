@@ -21,9 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${redrose.className} max-w-340 mx-auto antialiased`}>
+      <body className={` ${redrose.className} max-w-340  mx-auto antialiased`}>
         <Header />
-        {children}
+        <main className="pt-20">
+          {children}
+        </main>
         <Footer/>
       </body>
     </html>

@@ -65,16 +65,10 @@ export default function ServicesSection() {
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSelectedImage((prev) => (prev + 1) % galleryImages.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  // Removed automatic interval - now controlled by click events
 
   return (
-    <div className="p-2">
+    <div className="p-2 px-[3vw]">
       <div className="w-full mx-auto">
         <div className="flex flex-col-reverse md:flex-row gap-8 md:items-start">
           {/* Image Gallery - Now appears first on mobile/tablet */}
@@ -82,10 +76,11 @@ export default function ServicesSection() {
             {galleryImages.map((image, index) => (
               <div
                 key={image.id}
+                onClick={() => setSelectedImage(index)}
                 className={`relative cursor-pointer transition-all duration-500 ease-in-out shrink-0 rounded-2xl overflow-hidden ${
                   selectedImage === index
-                    ? "w-60 sm:w-72 md:w-96 lg:w-sm h-64 sm:h-72 md:h-80"
-                    : "w-8 sm:w-10 md:w-12 h-64 sm:h-72 md:h-80 "
+                    ? "w-50 sm:w-60 md:w-80 lg:w-xs h-64 sm:h-72 md:h-80"
+                    : "w-8 sm:w-10 md:w-10 h-64 sm:h-72 md:h-80 "
                 }`}
               >
                 <Image

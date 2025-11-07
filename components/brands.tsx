@@ -36,11 +36,11 @@ export default function Brands() {
           className="w-16 sm:w-20 md:w-24 grayscale-75   lg:w-28 h-auto object-contain"
         />
         <Image 
-          src={'/randomlogo 2.png'}
+          src={'/newon.png'}
           alt='Partner Logo'
           width={100}
           height={100}
-          className="w-16 sm:w-20 md:w-24 lg:w-28 h-auto object-contain col-span-2 sm:col-span-1"
+          className="w-16 grayscale-90 sm:w-20 md:w-24 lg:w-28 h-auto object-contain col-span-2 sm:col-span-1"
         />
       </div>
     </div>
