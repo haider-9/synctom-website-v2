@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CTASection() {
   return (
-    <div className="relative py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 lg:px-8 mx-4 sm:mx-6 lg:mx-8 rounded-lg overflow-hidden">
+    <div className="relative py-12 sm:py-16 md:py-20 mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 lg:px-8 mx-4 sm:mx-6 lg:mx-8 rounded-lg overflow-hidden mt-6">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image

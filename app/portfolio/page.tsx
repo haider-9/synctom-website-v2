@@ -129,15 +129,15 @@ export default function PortfolioPage() {
             {/* First Column - Project Info */}
             <div className="space-y-6 sm:space-y-8 lg:col-span-1 order-1 md:order-1">
               {/* Title Section */}
-              <div className="relative bg-white p-4 sm:p-6 rounded-lg border">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 pr-12 sm:pr-16">
+              <div className="relative bg-white clipped-div p-4 sm:p-6 rounded-lg border">
+                <h2 className="text-2xl font-bold text-gray-900 pr-12 sm:pr-16">
                   Diniiz : A Restaurant Management Platform
                 </h2>
-                <div className="absolute bottom-2 right-4">
+                <div className="absolute bottom-[-0.5px] right-[-1px] rounded-tl-xl border-t border-s bg-white py-2 px-6">
                   <Image
                     src="/diniiz.png"
                     alt="Diniiz Logo"
-                    width={40}
+                    width={50}
                     height={40}
                     className="rounded-lg"
                   />
@@ -166,7 +166,7 @@ export default function PortfolioPage() {
                   alt="Diniiz Restaurant Management Platform"
                   width={800}
                   height={600}
-                  className="rounded-lg shadow-2xl w-full h-full object-cover"
+                  className="rounded-lg shadow-2xl pointer-events-none w-full h-full object-cover"
                 />
               </div>
             </div>
@@ -222,11 +222,11 @@ export default function PortfolioPage() {
             {/* First Column - Project Info */}
             <div className="space-y-6 sm:space-y-8 lg:col-span-1 order-1 md:order-1">
               {/* Title Section */}
-              <div className="relative bg-white p-4 sm:p-6 rounded-lg border">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 pr-12 sm:pr-16">
+              <div className="relative bg-white p-4 sm:p-6 rounded-lg border ">
+                <h2 className="text-2xl font-bold text-gray-900 pr-12 sm:pr-16">
                   Axion : Modern Business Solutions
                 </h2>
-                <div className="absolute bottom-4 right-4">
+                <div className="absolute bottom-[-0.5px] right-[-1px] rounded-tl-xl border-t border-s bg-white px-6">
                   <Image
                     src="/axion.svg"
                     alt="Axion Logo"
@@ -245,8 +245,8 @@ export default function PortfolioPage() {
                   with cutting-edge technology to deliver seamless user
                   experiences and robust performance for modern enterprises.
                 </p>
-                 <a href='https://www.axionlights.com' target="_blank" className="text-base sm:text-lg hover:underline flex items-center gap-1">
-                  View Website <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5"/>
+                 <a href='https://www.axionlights.com' target="_blank" className="text-base sm:text-lg hover:underline flex items-center gap-1 group">
+                  View Website <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform"/>
                 </a>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function PortfolioPage() {
                   alt="Axion Business Management Platform"
                   width={800}
                   height={600}
-                  className="rounded-lg shadow-2xl w-full h-full object-cover"
+                  className="rounded-lg pointer-events-none shadow-2xl w-full h-full object-cover"
                 />
               </div>
             </div>

@@ -54,7 +54,7 @@ const galleryImages = [
 export default function ServicesSection() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  console.log(isMobile);
+  
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 720);
@@ -65,7 +65,15 @@ export default function ServicesSection() {
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  // Removed automatic interval - now controlled by click events
+
+  // Auto-advance images every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSelectedImage((prev) => (prev + 1) % galleryImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [selectedImage]); // Reset interval when selectedImage changes (on click)
 
   return (
     <div className="p-2 px-[3vw]">

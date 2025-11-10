@@ -20,7 +20,7 @@ function ExpertiseCard({ iconSvg, title, description }: ExpertiseCardProps) {
             alt={`${title} icon`}
             width={32}
             height={32}
-            className="w-8 h-8"
+            className="w-8 pointer-events-none h-8"
           />
         </div>
         <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
@@ -69,7 +69,7 @@ function IndustryCard({
                 alt={`${title} icon`}
                 width={24}
                 height={24}
-                className="size-full"
+                className="size-full pointer-events-none"
               />
             </div>
             <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
@@ -98,7 +98,7 @@ function IndustryCard({
             alt={title}
             width={400}
             height={250}
-            className="w-full h-64 object-cover rounded-xl"
+            className="w-full h-64 pointer-events-none object-cover rounded-xl"
           />
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function Industries() {
                 alt="Team collaboration illustration"
                 width={600}
                 height={400}
-                className="w-full max-w-lg h-auto object-contain"
+                className="w-full max-w-lg h-auto pointer-events-none object-contain"
                 priority
               />
             </div>

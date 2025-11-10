@@ -359,7 +359,7 @@ export default async function ServicePage({ params }: PageProps) {
                 alt={service.title}
                 width={600}
                 height={400}
-                className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain rounded-xl"
+                className="w-full max-w-xs pointer-events-none sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain rounded-xl"
                 priority
               />
             </div>

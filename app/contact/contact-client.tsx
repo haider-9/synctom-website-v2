@@ -36,10 +36,43 @@ export default function ContactClient() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          inquiryPurpose: "",
+          description: "",
+          fullName: "",
+          email: "",
+          organization: "",
+          phoneNumber: "",
+          message: "",
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -380,10 +413,27 @@ export default function ContactClient() {
               />
             </div>
 
+            {/* Submit Status Messages */}
+            {submitStatus === 'success' && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-green-800 text-sm">
+                  Thank you! Your message has been sent successfully. We'll get back to you soon.
+                </p>
+              </div>
+            )}
+            
+            {submitStatus === 'error' && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-800 text-sm">
+                  Sorry, there was an error sending your message. Please try again or contact us directly.
+                </p>
+              </div>
+            )}
+
             {/* Submit Button */}
             <div className="flex justify-center pt-6">
-              <Button type="submit" variant={"default"}>
-                Submit Form
+              <Button type="submit" variant={"default"} disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Submit Form'}
               </Button>
             </div>
           </form>

@@ -180,7 +180,7 @@ export default function Industries() {
               src='/globe.png'
               alt="globe"
               fill
-              className="pointer-events-none`"
+              className="pointer-events-none"
               />
             </div>
           </div>

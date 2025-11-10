@@ -6,7 +6,7 @@ export default function Brands() {
       <h2 className="text-lg sm:text-xl md:text-2xl text-center font-bold mb-6 sm:mb-8 md:mb-10 px-4 sm:px-0">
         Trusted by Leading Teams and Global Brands
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 md:gap-10 items-center justify-items-center">
+      <div className="grid grid-cols-2 *:pointer-events-none sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 md:gap-10 items-center justify-items-center">
         <Image 
           src={'/diniiz.png'}
           alt='Diniiz'

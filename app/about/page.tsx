@@ -103,7 +103,7 @@ function TeamCard({ member }: { member: TeamMember }) {
         {/* LinkedIn Icon */}
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
           <Link
-            href="https://www.linkedin.com/company/synctom/"
+            href={member.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
@@ -161,7 +161,7 @@ export default function About() {
                 alt="Synctom office workspace"
                 width={800}
                 height={400}
-                className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl sm:rounded-2xl shadow-lg"
+                className="w-full pointer-events-none h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl sm:rounded-2xl shadow-lg"
                 priority
               />
             </div>

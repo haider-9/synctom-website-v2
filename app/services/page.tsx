@@ -109,7 +109,7 @@ export default function Service() {
                 alt="Team collaboration illustration"
                 width={600}
                 height={400}
-                className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain"
+                className="w-full max-w-xs sm:max-w-sm pointer-events-none md:max-w-md lg:max-w-lg h-auto object-contain"
                 priority
               />
             </div>

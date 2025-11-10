@@ -105,6 +105,10 @@ export default function Team() {
             <TeamCard key={member.id} member={member} />
           ))}
         </div>
+        <div className="flex items-center justify-center">
+
+          <Button asChild><Link href={"/about"}>See Full Team</Link></Button>
+        </div>
       </div>
     </section>
   );

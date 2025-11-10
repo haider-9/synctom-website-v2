@@ -10,7 +10,7 @@ export default function ProcessSection() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 rounded-2xl border ">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-14 md:mb-16">
@@ -51,7 +51,7 @@ export default function ProcessSection() {
                 src="/portfolio-image.png"
                 alt="Process Illustration - Person working at desk"
                 fill
-                className="object-contain"
+                className="object-contain pointer-events-none"
               />
             </div>
           </div>
