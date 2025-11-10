@@ -18,7 +18,7 @@ const teamMembers: TeamMember[] = [
     id: 1,
     name: "Syed Ali Taqi",
     position: "Board Member",
-    email: "alitaqi@syncton.com",
+    email: "alitaqi@synctom.com",
     image:
       "/teams/alitaqi.jpg",
     linkedin: "https://www.linkedin.com/in/syed-ali-taqi-hussnain/",
@@ -27,7 +27,7 @@ const teamMembers: TeamMember[] = [
     id: 2,
     name: "Mehtab Khan Afridi",
     position: "Board Member",
-    email: "mkafridi@syncton.com",
+    email: "mkafridi@synctom.com",
     image:
       "/teams/mehtab.png",
       linkedin:'https://www.linkedin.com/in/mehtab-khan-852a3928b/'
@@ -36,7 +36,7 @@ const teamMembers: TeamMember[] = [
     id: 3,
     name: "Syed Ain Ali",
     position: "Board Member",
-    email: "ainali@syncton.com",
+    email: "ainali@synctom.com",
     image:
       "/teams/ain.jpg",
       linkedin:'https://www.linkedin.com/in/ain-ali-a0a86b31b/'

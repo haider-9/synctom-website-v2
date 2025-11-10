@@ -114,7 +114,7 @@ export default function Achievements() {
             Building Trust Through Proven Success
           </h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-4 sm:px-0">
-            At Syncton, our journey is defined by dedication, innovation, and measurable impact.
+            At synctom, our journey is defined by dedication, innovation, and measurable impact.
           </p>
         </div>
 

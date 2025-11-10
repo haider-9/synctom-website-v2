@@ -115,7 +115,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center text-sm sm:text-base text-gray-600">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-gray-400 shrink-0" />
-                <span>+92 301 1234567</span>
+                <span>0514444599</span>
               </div>
               <div className="flex items-start text-sm sm:text-base text-gray-600">
                 <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 mt-0.5 text-gray-400 shrink-0" />
@@ -143,7 +143,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-200 mt-8 sm:mt-10 md:mt-12 pt-4 sm:pt-6">
           <p className="text-gray-500 text-xs sm:text-sm text-center">
-            © 2025 Synctom. All rights reserved.
+            © {new Date().getFullYear()} Synctom. All rights reserved.
           </p>
         </div>
       </div>

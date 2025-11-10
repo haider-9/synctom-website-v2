@@ -136,7 +136,7 @@ export default function ServicesSection() {
               Transforming Ideas into Scalable Digital Solutions
             </h2>
             <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
-              From design to development, Syncton provides end-to-end digital
+              From design to development, synctom provides end-to-end digital
               solutions that empower brands and startups to thrive. Our
               multidisciplinary team blends creativity with technology to
               deliver products that are functional, beautiful, and built to

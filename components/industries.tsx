@@ -74,7 +74,7 @@ export default function Industries() {
             Innovating Across Sectors
           </h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-xs sm:max-w-2xl md:max-w-3xl mx-auto px-4 sm:px-0">
-            Syncton partners with startups, enterprises, and global brands
+            synctom partners with startups, enterprises, and global brands
             across multiple industries to craft scalable, high-performing
             digital solutions that drive measurable results.
           </p>

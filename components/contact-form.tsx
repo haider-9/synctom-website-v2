@@ -246,7 +246,11 @@ export default function ContactSection() {
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Phone className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
-            <span>+92 300 1234567</span>
+            <span>
+              <a href="tel:0514444599">
+                0514444599
+                </a>
+                </span>
           </div>
           
         </div>

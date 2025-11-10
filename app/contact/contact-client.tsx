@@ -152,7 +152,7 @@ export default function ContactClient() {
               </div>
               <div>
                 <p className="text-sm sm:text-base text-gray-600">
-                  0301 1234567
+                  0514444599
                 </p>
               </div>
             </div>
