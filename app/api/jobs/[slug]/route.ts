@@ -5,10 +5,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     
     const job = await prisma.job.findUnique({
       where: { slug },
@@ -47,7 +47,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -59,7 +59,7 @@ export async function PUT(
       );
     }
 
-    const { slug } = params;
+    const { slug } = await params;
     const data = await request.json();
     
     const job = await prisma.job.update({
@@ -86,7 +86,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -98,7 +98,7 @@ export async function DELETE(
       );
     }
 
-    const { slug } = params;
+    const { slug } = await params;
     
     await prisma.job.delete({
       where: { slug }
