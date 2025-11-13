@@ -63,6 +63,8 @@ export const metadata: Metadata = {
   },
 };
 
+import AuthProvider from "@/components/providers/session-provider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -71,11 +73,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` ${redrose.className} max-w-340  mx-auto antialiased`}>
-        <Header />
-        <main className="pt-20">
-          {children}
-        </main>
-        <Footer/>
+        <AuthProvider>
+          <Header />
+          <main className="pt-20">
+            {children}
+          </main>
+          <Footer/>
+        </AuthProvider>
       </body>
     </html>
   );

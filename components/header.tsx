@@ -85,6 +85,12 @@ export default function Header() {
             About
           </Link>
           <Link
+            href="/apply"
+            className="text-sm font-medium hover:text-blue-600 transition-colors"
+          >
+            Apply
+          </Link>
+          <Link
             href="/contact"
             className="text-sm font-medium hover:text-blue-600 transition-colors"
           >
@@ -94,6 +100,13 @@ export default function Header() {
 
         {/* CTA & Mobile Menu */}
         <div className="flex items-center space-x-2">
+          <Button
+            asChild
+            variant="outline"
+            className="hidden md:flex"
+          >
+            <Link href="/auth">Sign In</Link>
+          </Button>
           <Button
             asChild
             className="hidden md:flex shadow-[0_4px_0_#000] active:translate-y-[2px] active:shadow-[0_2px_0_#000]"
