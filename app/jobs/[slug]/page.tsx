@@ -14,6 +14,7 @@ import {
   Share2,
   Check,
 } from "lucide-react";
+import Loading from "@/app/loading";
 
 interface Job {
   id: string;
@@ -46,64 +47,42 @@ export default function JobDetailsPage({
   const [isShared, setIsShared] = useState(false);
 
   useEffect(() => {
-    // Fetch job data
     const fetchJob = async () => {
-      // TODO: Replace with actual API call
-      // const response = await fetch(`/api/jobs/${params.slug}`);
-      // const data = await response.json();
-      // setJob(data.job);
+      try {
+        const response = await fetch(`/api/jobs`);
+        const data = await response.json();
 
-      // Mock data for now
-      setJob({
-        id: "1",
-        slug: slug,
-        title: "Frontend Developer Intern",
-        location: "Remote",
-        type: "Internship",
-        salary: "Unpaid",
-        experience: "Entry Level",
-        deadline: "2025-12-31",
-        postedDate: "2025-11-01",
-        description: `
-          <p>We are looking for a passionate Frontend Developer Intern to join our team. This is a great opportunity to work on real-world projects and learn from experienced developers.</p>
-          <p>You'll be working with modern technologies and contributing to our web applications that serve thousands of users.</p>
-        `,
-        responsibilities: `
-          <ul>
-            <li>Develop and maintain web applications using React and Next.js</li>
-            <li>Collaborate with designers to implement UI/UX designs</li>
-            <li>Write clean, maintainable, and efficient code</li>
-            <li>Participate in code reviews and team meetings</li>
-            <li>Learn and apply best practices in web development</li>
-          </ul>
-        `,
-        requirements: `
-          <ul>
-            <li>Basic knowledge of HTML, CSS, and JavaScript</li>
-            <li>Familiarity with React or similar frameworks</li>
-            <li>Understanding of responsive design principles</li>
-            <li>Good problem-solving skills</li>
-            <li>Ability to work in a team environment</li>
-            <li>Currently pursuing or recently completed a degree in Computer Science or related field</li>
-          </ul>
-        `,
-        benefits: `
-          <ul>
-            <li>Work remotely from anywhere</li>
-            <li>Flexible working hours</li>
-            <li>Mentorship from senior developers</li>
-            <li>Certificate upon completion</li>
-            <li>Opportunity for full-time employment</li>
-            <li>Real-world project experience</li>
-          </ul>
-        `,
-        company: {
-          name: "Synctom",
-          logo: "/logo.png",
-          about:
-            "Synctom is a digital solutions company specializing in web development, mobile apps, and UI/UX design.",
-        },
-      });
+        if (data.success) {
+          // Find the job by slug
+          const foundJob = data.jobs.find((j: any) => j.slug === slug);
+
+          if (foundJob) {
+            setJob({
+              id: foundJob.id,
+              slug: foundJob.slug,
+              title: foundJob.title,
+              location: foundJob.location,
+              type: foundJob.type,
+              salary: foundJob.salary || "Competitive",
+              experience: foundJob.experience,
+              deadline: foundJob.deadline,
+              postedDate: foundJob.createdAt,
+              description: foundJob.description,
+              responsibilities: foundJob.responsibilities,
+              requirements: foundJob.requirements,
+              benefits: foundJob.benefits || "",
+              company: {
+                name: "Synctom",
+                logo: "/logo.png",
+                about:
+                  "Synctom is a digital solutions company specializing in web development, mobile apps, and UI/UX design.",
+              },
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching job:", error);
+      }
     };
 
     fetchJob();
@@ -133,23 +112,18 @@ export default function JobDetailsPage({
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading job details...</p>
-        </div>
-      </div>
+     <Loading/>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen ">
       {/* Header */}
       <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between mb-6">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/jobs">
+              <Link href="/apply">
                 <ArrowLeft className="size-4 mr-2" />
                 Back to Jobs
               </Link>
@@ -193,11 +167,22 @@ export default function JobDetailsPage({
                 </span>
                 <span className="flex items-center gap-1">
                   <Briefcase className="size-4" />
-                  {job.type}
+                  {job.type
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
                 </span>
                 <span className="flex items-center gap-1">
                   <Clock className="size-4" />
-                  {job.experience}
+                  {(() => {
+                    const experienceMap: Record<string, string> = {
+                      entry: "Entry Level",
+                      junior: "Junior (1-2 years)",
+                      mid: "Mid Level (3-5 years)",
+                      senior: "Senior (5+ years)",
+                    };
+                    return experienceMap[job.experience] || job.experience;
+                  })()}
                 </span>
                 {job.salary && (
                   <span className="flex items-center gap-1">
@@ -298,11 +283,28 @@ export default function JobDetailsPage({
                   </div>
                   <div>
                     <span className="text-muted-foreground">Job Type:</span>
-                    <p className="font-medium">{job.type}</p>
+                    <p className="font-medium">
+                      {job.type
+                        .split("-")
+                        .map(
+                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")}
+                    </p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Experience:</span>
-                    <p className="font-medium">{job.experience}</p>
+                    <p className="font-medium">
+                      {(() => {
+                        const experienceMap: Record<string, string> = {
+                          entry: "Entry Level",
+                          junior: "Junior (1-2 years)",
+                          mid: "Mid Level (3-5 years)",
+                          senior: "Senior (5+ years)",
+                        };
+                        return experienceMap[job.experience] || job.experience;
+                      })()}
+                    </p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Location:</span>

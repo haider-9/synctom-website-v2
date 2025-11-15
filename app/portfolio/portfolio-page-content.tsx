@@ -1,10 +1,29 @@
-"use client";
-
 import ProcessSection from "@/components/process-section";
 import CTASection from "@/components/cta-section";
 import PortfolioClient from "./portfolio-client";
 
-export default function PortfolioPageContent() {
+interface CaseStudy {
+  id: string;
+  slug: string;
+  title: string;
+  client: string;
+  industry: string;
+  duration: string;
+  content: string;
+  coverImage?: string | null;
+  logo?: string | null;
+  images: string[];
+  technologies: any;
+  category?: string | null;
+}
+
+interface PortfolioPageContentProps {
+  caseStudies: CaseStudy[];
+}
+
+export default function PortfolioPageContent({
+  caseStudies,
+}: PortfolioPageContentProps) {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -22,7 +41,7 @@ export default function PortfolioPageContent() {
       </section>
 
       {/* Portfolio Content with Tabs */}
-      <PortfolioClient />
+      <PortfolioClient initialCaseStudies={caseStudies} />
 
       {/* Process Section */}
       <ProcessSection />

@@ -16,8 +16,9 @@ const navigationItems = [
   { label: "Industries", href: "/industries" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "About", href: "/about" },
-  { label: "Apply", href: "/apply" },
+  { label: "Careers", href: "/apply" },
   { label: "Contact", href: "/contact" },
+  {label:"Blogs",href:"/blogs"}
 ];
 
 export function MobileNavbar({ className }: MobileNavbarProps) {

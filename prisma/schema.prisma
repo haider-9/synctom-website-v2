@@ -85,17 +85,17 @@ model Job {
 }
 
 model Application {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  jobId     String   @db.ObjectId
-  userId    String   @db.ObjectId
-  name      String
-  email     String
-  phone     String?
-  resume    String?
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  jobId       String   @db.ObjectId
+  userId      String   @db.ObjectId
+  name        String
+  email       String
+  phone       String?
+  resume      String?
   coverLetter String?
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   job  Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -130,8 +130,10 @@ model CaseStudy {
   duration     String
   content      String
   coverImage   String?
+  logo         String?
   images       String[]
-  technologies String[]
+  technologies Json[]
+  category     String?
   status       String   @default("published")
   views        Int      @default(0)
   createdAt    DateTime @default(now())
@@ -142,12 +144,36 @@ model CaseStudy {
 }
 
 model Certificate {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  internName   String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  internName      String
   internshipTitle String
-  startDate    DateTime
-  endDate      DateTime
-  certificateId String  @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  startDate       DateTime
+  endDate         DateTime
+  duration        String
+  certificateId   String   @unique
+  sequenceNumber  Int      @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Counter {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  key String @unique
+  seq Int    @default(0)
+}
+
+model TeamMember {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  role        String
+  bio         String?
+  image       String?
+  linkedin    String?
+  twitter     String?
+  github      String?
+  email       String?
+  order       Int      @default(0)
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -24,9 +24,17 @@ export async function POST(request: Request) {
     
     const caseStudy = await prisma.caseStudy.create({
       data: {
-        ...data,
+        title: data.title,
         slug,
+        client: data.client,
+        industry: data.industry,
+        duration: data.duration,
+        content: data.content,
+        coverImage: data.coverImage,
+        logo: data.logo,
         images: data.images || [],
+        technologies: data.technologies || [],
+        category: data.category,
         userId: session.user.id,
       }
     });
@@ -48,21 +56,21 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     const caseStudies = await prisma.caseStudy.findMany({
-      where: { status: "published" },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-          }
-        }
+      where: { 
+        status: "published"
       },
       orderBy: { createdAt: "desc" }
     });
     
+    // Map to ensure category has a default value if null
+    const sanitizedCaseStudies = caseStudies.map(study => ({
+      ...study,
+      category: study.category || "Uncategorized"
+    }));
+    
     return NextResponse.json({ 
       success: true, 
-      caseStudies 
+      caseStudies: sanitizedCaseStudies 
     });
   } catch (error) {
     console.error("Error fetching case studies:", error);

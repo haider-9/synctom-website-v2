@@ -13,7 +13,7 @@ export default function Header() {
   useEffect(() => {
     const controlNavbar = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Show header when at top of page
       if (currentScrollY < 10) {
         setIsVisible(true);
@@ -24,18 +24,18 @@ export default function Header() {
       } else if (currentScrollY < lastScrollY) {
         setIsVisible(true);
       }
-      
+
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', controlNavbar);
-    return () => window.removeEventListener('scroll', controlNavbar);
+    window.addEventListener("scroll", controlNavbar);
+    return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY]);
 
   return (
-    <header 
+    <header
       className={`fixed top-0 left-0 right-0 z-100 bg-white/95 backdrop-blur-md dark:bg-neutral-950/95 border-b border-neutral-200 dark:border-neutral-800 transition-transform duration-300 ease-in-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
+        isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
@@ -88,7 +88,7 @@ export default function Header() {
             href="/apply"
             className="text-sm font-medium hover:text-blue-600 transition-colors"
           >
-            Apply
+            Careers
           </Link>
           <Link
             href="/contact"
@@ -96,15 +96,17 @@ export default function Header() {
           >
             Contact
           </Link>
+          <Link
+            href="/blogs"
+            className="text-sm font-medium hover:text-blue-600 transition-colors"
+          >
+            Blogs
+          </Link>
         </nav>
 
         {/* CTA & Mobile Menu */}
         <div className="flex items-center space-x-2">
-          <Button
-            asChild
-            variant="outline"
-            className="hidden md:flex"
-          >
+          <Button asChild variant="outline" className="hidden md:flex">
             <Link href="/auth">Sign In</Link>
           </Button>
           <Button

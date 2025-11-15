@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
-import { ArrowLeft, Upload, Plus, X, Eye, Loader2 } from "lucide-react";
+import { ArrowLeft, Plus, X, Eye } from "lucide-react";
 import dynamic from "next/dynamic";
+import ImageUpload from "@/components/image-upload";
+import { toast } from "sonner";
 
 const TiptapEditor = dynamic(() => import("@/components/editor/tiptap-editor"), {
   ssr: false,
@@ -27,7 +29,6 @@ interface BlogData {
 export default function CreateBlogPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [isPublishing, setIsPublishing] = useState(false);
   const [blogData, setBlogData] = useState<BlogData>({
     title: "",
     slug: "",
@@ -51,30 +52,37 @@ export default function CreateBlogPage() {
   };
 
   const handlePublish = async () => {
-    setIsPublishing(true);
-    try {
-      const response = await fetch("/api/blogs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...blogData, tags }),
-      });
-      
-      if (response.ok) {
-        alert("Blog published successfully!");
-        window.location.href = "/dashboard";
-      } else {
-        alert("Failed to publish blog");
-      }
-    } catch (error) {
-      console.error("Error publishing blog:", error);
-      alert("Error publishing blog");
-    } finally {
-      setIsPublishing(false);
+    if (!blogData.title || !blogData.content || !blogData.category) {
+      toast.error("Please fill in all required fields");
+      return;
     }
+
+    const publishPromise = fetch("/api/blogs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...blogData, tags }),
+    }).then(async (response) => {
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to publish blog");
+      }
+      return response.json();
+    });
+
+    toast.promise(publishPromise, {
+      loading: "Publishing blog...",
+      success: () => {
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1000);
+        return "Blog published successfully!";
+      },
+      error: (err) => err.message || "Failed to publish blog",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen ">
       <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -114,8 +122,7 @@ export default function CreateBlogPage() {
                 </div>
               </SheetContent>
             </Sheet>
-            <Button size="sm" onClick={handlePublish} disabled={isPublishing}>
-              {isPublishing ? <Loader2 className="size-4 mr-2 animate-spin" /> : null}
+            <Button size="sm" onClick={handlePublish}>
               Publish
             </Button>
           </div>
@@ -166,11 +173,12 @@ export default function CreateBlogPage() {
               <CardTitle>Featured Image</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer">
-                <Upload className="size-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">Click to upload or drag and drop</p>
-                <p className="text-xs text-muted-foreground">PNG, JPG up to 10MB (Recommended: 1200x630px)</p>
-              </div>
+              <ImageUpload
+                value={blogData.featuredImage}
+                onChange={(url) => setBlogData({ ...blogData, featuredImage: url })}
+                onRemove={() => setBlogData({ ...blogData, featuredImage: "" })}
+              />
+              <p className="text-xs text-muted-foreground mt-2">Recommended: 1200x630px</p>
             </CardContent>
           </Card>
 
@@ -225,7 +233,7 @@ export default function CreateBlogPage() {
                     placeholder="Add tag" 
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
                   />
                   <Button onClick={addTag} size="icon">
                     <Plus className="size-4" />
@@ -266,8 +274,7 @@ export default function CreateBlogPage() {
             <Button variant="outline" asChild className="flex-1">
               <Link href="/dashboard">Cancel</Link>
             </Button>
-            <Button className="flex-1" onClick={handlePublish} disabled={isPublishing}>
-              {isPublishing ? <Loader2 className="size-4 mr-2 animate-spin" /> : null}
+            <Button className="flex-1" onClick={handlePublish}>
               Publish Blog
             </Button>
           </div>

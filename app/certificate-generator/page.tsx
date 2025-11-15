@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Download, Eye } from "lucide-react";
+import { ArrowLeft, Download, Eye, Save } from "lucide-react";
 import Link from "next/link";
 import CertificatePreview from "@/components/certificate-preview";
+import { toast } from "sonner";
 
 export default function CertificateGeneratorPage() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,9 @@ export default function CertificateGeneratorPage() {
     position: "Intern AI & ML",
   });
   const [showPreview, setShowPreview] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [certificateId, setCertificateId] = useState<string | null>(null);
+  const certificateRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -27,14 +31,63 @@ export default function CertificateGeneratorPage() {
   };
 
   const handlePreview = () => {
-    if (formData.name && formData.duration) {
+    if (
+      formData.name &&
+      formData.duration &&
+      formData.startDate &&
+      formData.endDate
+    ) {
       setShowPreview(true);
+    } else {
+      toast.error("Please fill in all required fields");
     }
   };
 
-  const handleDownload = () => {
+  const handleSave = async () => {
+    if (
+      !formData.name ||
+      !formData.duration ||
+      !formData.startDate ||
+      !formData.endDate
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const response = await fetch("/api/certificates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          internName: formData.name,
+          internshipTitle: formData.position,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          duration: formData.duration,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setCertificateId(data.certificate.certificateId);
+        toast.success("Certificate saved successfully!");
+      } else {
+        toast.error(data.message || "Failed to save certificate");
+      }
+    } catch (error) {
+      console.error("Error saving certificate:", error);
+      toast.error("Failed to save certificate");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
+      toast.success("Opening print dialog...");
     }
   };
 
@@ -128,22 +181,45 @@ export default function CertificateGeneratorPage() {
                 type="button"
                 onClick={handlePreview}
                 className="w-full shadow-[0_4px_0_#000] active:translate-y-[2px] active:shadow-[0_2px_0_#000]"
-                disabled={!formData.name || !formData.duration}
+                disabled={
+                  !formData.name ||
+                  !formData.duration ||
+                  !formData.startDate ||
+                  !formData.endDate
+                }
               >
                 <Eye className="size-4 mr-2" />
                 Preview
               </Button>
               <Button
                 type="button"
-                onClick={handleDownload}
+                onClick={handleSave}
+                variant="outline"
+                className="w-full"
+                disabled={!showPreview || isSaving}
+              >
+                <Save className="size-4 mr-2" />
+                {isSaving ? "Saving..." : "Save Certificate"}
+              </Button>
+              <Button
+                type="button"
+                onClick={handlePrint}
                 variant="outline"
                 className="w-full"
                 disabled={!showPreview}
               >
                 <Download className="size-4 mr-2" />
-                Download PDF
+                Print Certificate
               </Button>
             </div>
+
+            {certificateId && (
+              <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                  Certificate ID: {certificateId}
+                </p>
+              </div>
+            )}
           </form>
         </motion.div>
 
@@ -156,7 +232,11 @@ export default function CertificateGeneratorPage() {
           {showPreview ? (
             <div className="min-h-full flex items-center justify-center p-8">
               <div className="w-full max-w-4xl">
-                <CertificatePreview formData={formData} />
+                <CertificatePreview
+                  formData={formData}
+                  certificateId={certificateId}
+                  ref={certificateRef}
+                />
               </div>
             </div>
           ) : (

@@ -2,8 +2,10 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Linkedin } from "lucide-react";
+import { Linkedin, Mail, Github } from "lucide-react";
+import { FaTwitter } from "react-icons/fa";
 import CTASection from "@/components/cta-section";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title:
@@ -22,110 +24,101 @@ export const metadata: Metadata = {
 };
 
 interface TeamMember {
-  id: number;
+  id: string;
   name: string;
-  position: string;
-  email: string;
-  image: string;
-  linkedin: string;
+  role: string;
+  bio: string | null;
+  email: string | null;
+  image: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  github: string | null;
 }
 
-const teamMembers: TeamMember[] = [
-  {
-    id: 1,
-    name: "Syed Ali Taqi",
-    position: "Board Member",
-    email: "alitaqi@synctom.com",
-    image: "/teams/alitaqi.jpg",
-    linkedin: "https://www.linkedin.com/in/syed-ali-taqi-hussnain/",
-  },
-  {
-    id: 2,
-    name: "Mehtab Khan Afridi",
-    position: "Board Member",
-    email: "mkafridi@synctom.com",
-    image: "/teams/mehtab.png",
-    linkedin: "https://www.linkedin.com/in/mehtab-khan-852a3928b/",
-  },
-  {
-    id: 3,
-    name: "Syed Ain Ali",
-    position: "Board Member",
-    email: "ainali@synctom.com",
-    image: "/teams/ain.jpg",
-    linkedin: "https://www.linkedin.com/in/ain-ali-a0a86b31b/",
-  },
-  {
-    id: 4,
-    name: "Haider Ahmad",
-    position: "Web Developer",
-    email: "haiderahmad352@gmail.com",
-    image: "/teams/haider.jpg",
-    linkedin: "https://www.linkedin.com/in/haider-ahmad-439317164/",
-  },
-  {
-    id: 5,
-    name: "Sharoon Shaleem",
-    position: "Web Developer",
-    email: "ssharoon166@gmail.com",
-    image: "/teams/sharoon.jpg",
-    linkedin: "https://www.linkedin.com/in/sharoon-shaleem-0a7a85226/",
-  },
-  {
-    id: 6,
-    name: "Raja Muhammad Zubair",
-    position: "UI/UX Designer",
-    email: "rajazubair5626573@gmail.com",
-    image: "/teams/raja.png",
-    linkedin: "https://www.linkedin.com/in/raja-zubair-664066294/",
-  },
-  {
-    id: 7,
-    name: "Ehtasham Ul Haq",
-    position: "Web Developer",
-    email: "ehteshamali@gmail.com",
-    image: "/teams/ehtasham.jpg",
-    linkedin: "https://www.linkedin.com/in/ehtasham-ul-haq-86069b274/",
-  },
-];
 function TeamCard({ member }: { member: TeamMember }) {
   return (
     <div className="relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group">
       <div className="relative h-110">
-        <Image
-          src={member.image}
-          alt={member.name}
-          fill
-          className="object-cover"
-        />
+        {member.image ? (
+          <Image
+            src={member.image}
+            alt={member.name}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+            <span className="text-white text-4xl font-bold">
+              {member.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
 
-        {/* LinkedIn Icon */}
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
-          <Link
-            href={member.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
-          >
-            <Linkedin className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-          </Link>
+        {/* Social Icons */}
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex gap-2">
+          {member.linkedin && (
+            <Link
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
+            >
+              <Linkedin className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+            </Link>
+          )}
+          {member.twitter && (
+            <Link
+              href={member.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
+            >
+              <FaTwitter className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+            </Link>
+          )}
+          {member.github && (
+            <Link
+              href={member.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
+            >
+              <Github className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+            </Link>
+          )}
+          {member.email && (
+            <Link
+              href={`mailto:${member.email}`}
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors"
+            >
+              <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+            </Link>
+          )}
         </div>
 
         {/* Member Info */}
         <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-white">
           <h3 className="text-lg sm:text-xl font-bold mb-1">{member.name}</h3>
           <p className="text-white/90 text-xs sm:text-sm mb-1 sm:mb-2">
-            {member.position}
+            {member.role}
           </p>
-          <p className="text-white/70 text-xs">{member.email}</p>
+          {member.bio && (
+            <p className="text-white/70 text-xs line-clamp-2">{member.bio}</p>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default function About() {
+export default async function About() {
+  // Fetch team members from database
+  const teamMembers = await prisma.teamMember.findMany({
+    where: { status: "active" },
+    orderBy: { order: "asc" },
+  });
+
   return (
     <div className="min-h-screen">
       {/* About Hero Section */}

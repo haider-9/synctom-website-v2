@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
-import { ArrowLeft, Eye, Loader2, MapPin, Clock, Briefcase, DollarSign } from "lucide-react";
+import { ArrowLeft, Eye, MapPin, Clock, Briefcase, DollarSign } from "lucide-react";
 import dynamic from "next/dynamic";
+import { toast } from "sonner";
 
 const TiptapEditor = dynamic(() => import("@/components/editor/tiptap-editor"), {
   ssr: false,
@@ -27,7 +28,6 @@ interface JobData {
 }
 
 export default function PostJobPage() {
-  const [isPosting, setIsPosting] = useState(false);
   const [jobData, setJobData] = useState<JobData>({
     title: "",
     location: "",
@@ -42,30 +42,37 @@ export default function PostJobPage() {
   });
 
   const handlePost = async () => {
-    setIsPosting(true);
-    try {
-      const response = await fetch("/api/jobs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(jobData),
-      });
-      
-      if (response.ok) {
-        alert("Job posted successfully!");
-        window.location.href = "/dashboard";
-      } else {
-        alert("Failed to post job");
-      }
-    } catch (error) {
-      console.error("Error posting job:", error);
-      alert("Error posting job");
-    } finally {
-      setIsPosting(false);
+    if (!jobData.title || !jobData.location || !jobData.type || !jobData.description) {
+      toast.error("Please fill in all required fields");
+      return;
     }
+
+    const postPromise = fetch("/api/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jobData),
+    }).then(async (response) => {
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to post job");
+      }
+      return response.json();
+    });
+
+    toast.promise(postPromise, {
+      loading: "Posting job...",
+      success: () => {
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1000);
+        return "Job posted successfully!";
+      },
+      error: (err) => err.message || "Failed to post job",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen ">
       <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -143,8 +150,7 @@ export default function PostJobPage() {
                 </div>
               </SheetContent>
             </Sheet>
-            <Button size="sm" onClick={handlePost} disabled={isPosting}>
-              {isPosting ? <Loader2 className="size-4 mr-2 animate-spin" /> : null}
+            <Button size="sm" onClick={handlePost}>
               Post Job
             </Button>
           </div>
@@ -284,8 +290,7 @@ export default function PostJobPage() {
             <Button variant="outline" asChild className="flex-1">
               <Link href="/dashboard">Cancel</Link>
             </Button>
-            <Button className="flex-1" onClick={handlePost} disabled={isPosting}>
-              {isPosting ? <Loader2 className="size-4 mr-2 animate-spin" /> : null}
+            <Button className="flex-1" onClick={handlePost}>
               Post Job
             </Button>
           </div>

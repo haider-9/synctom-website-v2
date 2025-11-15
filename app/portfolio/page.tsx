@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import PortfolioPageContent from "./portfolio-page-content";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Portfolio | Synctom - Creative Projects That Inspire Innovation",
@@ -66,6 +67,32 @@ export const metadata: Metadata = {
   category: "Technology",
 };
 
-export default function PortfolioPage() {
-  return <PortfolioPageContent />;
+export default async function PortfolioPage() {
+  // Fetch case studies on the server
+  const caseStudies = await prisma.caseStudy.findMany({
+    where: {
+      status: "published",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  // Serialize the data for client component
+  const serializedCaseStudies = caseStudies.map((cs: any) => ({
+    id: cs.id,
+    slug: cs.slug,
+    title: cs.title,
+    client: cs.client,
+    industry: cs.industry,
+    duration: cs.duration,
+    content: cs.content,
+    coverImage: cs.coverImage,
+    logo: cs.logo,
+    images: cs.images,
+    technologies: cs.technologies,
+    category: cs.category,
+  }));
+
+  return <PortfolioPageContent caseStudies={serializedCaseStudies} />;
 }

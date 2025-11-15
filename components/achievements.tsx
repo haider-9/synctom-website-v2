@@ -41,11 +41,11 @@ function useCountAnimation(target: number, duration: number = 2000) {
     const animate = (currentTime: number) => {
       if (!startTime) startTime = currentTime;
       const progress = Math.min((currentTime - startTime) / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const currentCount = Math.floor(easeOutQuart * target);
-      
+
       setCount(currentCount);
 
       if (progress < 1) {
@@ -65,7 +65,11 @@ function useCountAnimation(target: number, duration: number = 2000) {
   return { count, setIsVisible };
 }
 
-function CounterCard({ achievement }: { achievement: typeof achievements[0] }) {
+function CounterCard({
+  achievement,
+}: {
+  achievement: (typeof achievements)[0];
+}) {
   const { count, setIsVisible } = useCountAnimation(achievement.number);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -91,7 +95,8 @@ function CounterCard({ achievement }: { achievement: typeof achievements[0] }) {
     <div ref={ref} className="text-center">
       <div className="mb-2 sm:mb-3">
         <span className="text-3xl sm:text-4xl md:text-5xl font-bold bg-linear-to-r from-[#4F46E5] to-[#EF3A61] bg-clip-text text-transparent">
-          {count}{achievement.suffix}
+          {count}
+          {achievement.suffix}
         </span>
       </div>
       <p className="text-gray-700 font-medium text-sm sm:text-base md:text-lg">
@@ -114,7 +119,8 @@ export default function Achievements() {
             Building Trust Through Proven Success
           </h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-4 sm:px-0">
-            At synctom, our journey is defined by dedication, innovation, and measurable impact.
+            At synctom, our journey is defined by dedication, innovation, and
+            measurable impact.
           </p>
         </div>
 

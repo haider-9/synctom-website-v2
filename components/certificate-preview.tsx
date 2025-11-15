@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { forwardRef } from "react";
 
 interface CertificatePreviewProps {
   formData: {
@@ -10,19 +11,25 @@ interface CertificatePreviewProps {
     endDate: string;
     position: string;
   };
+  certificateId?: string | null;
 }
 
-export default function CertificatePreview({ formData }: CertificatePreviewProps) {
-  const currentDate = new Date().toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+const CertificatePreview = forwardRef<HTMLDivElement, CertificatePreviewProps>(
+  ({ formData, certificateId }, ref) => {
+    const currentDate = new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
 
-  const refNumber = `2025-INT-${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`;
+    const refNumber = certificateId || `${new Date().getFullYear()}-INT-XXX`;
 
-  return (
-    <div id="certificate-preview" className="relative w-full aspect-[8.5/14] bg-white rounded-lg shadow-lg overflow-hidden print:shadow-none print:rounded-none">
+    return (
+      <div 
+        ref={ref}
+        id="certificate-preview" 
+        className="relative w-full aspect-[8.5/14] bg-white rounded-lg shadow-lg overflow-hidden print:shadow-none print:rounded-none"
+      >
       {/* Top Wave - Curves upward and ends before right edge */}
       <div className="absolute top-0 left-0 right-0 h-[32%] pointer-events-none">
         <svg
@@ -188,7 +195,10 @@ export default function CertificatePreview({ formData }: CertificatePreviewProps
           </div>
         </div>
       </div>
-
     </div>
   );
-}
+});
+
+CertificatePreview.displayName = "CertificatePreview";
+
+export default CertificatePreview;

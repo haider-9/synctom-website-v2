@@ -1,44 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Upload, CheckCircle2, FileText, X, ZoomIn } from "lucide-react";
+import {
+  ArrowLeft,
+  Upload,
+  CheckCircle2,
+  FileText,
+  X,
+  ZoomIn,
+  Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const jobData: Record<string, { title: string; department: string }> = {
-  "software-engineer": { title: "Software Engineer", department: "Engineering" },
-  "ui-ux-designer": { title: "UI/UX Designer", department: "Design" },
-  "data-scientist": { title: "Data Scientist", department: "AI & ML" },
-  "mobile-developer": { title: "Mobile Developer", department: "Engineering" },
-  "devops-engineer": { title: "DevOps Engineer", department: "Infrastructure" },
-  "intern-ai-ml": { title: "Intern AI & ML", department: "AI & ML" },
-};
+interface Job {
+  id: string;
+  title: string;
+  location: string;
+  type: string;
+  experience: string;
+}
 
 export default function JobApplicationPage() {
   const params = useParams();
+  const router = useRouter();
   const jobId = params.jobId as string;
-  const job = jobData[jobId] || { title: "Position", department: "" };
+
+  const [job, setJob] = useState<Job | null>(null);
+  const [isLoadingJob, setIsLoadingJob] = useState(true);
 
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
-    experience: "",
     linkedIn: "",
     portfolio: "",
     coverLetter: "",
   });
   const [cvFile, setCvFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [imageZoomed, setImageZoomed] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          setJob(data.job);
+        } else {
+          toast.error("Job not found");
+          router.push("/apply");
+        }
+      } catch (error) {
+        console.error("Error fetching job:", error);
+        toast.error("Failed to load job details");
+      } finally {
+        setIsLoadingJob(false);
+      }
+    };
+
+    fetchJob();
+  }, [jobId, router]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -51,15 +87,102 @@ export default function JobApplicationPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+
+    if (!cvFile) {
+      toast.error("Please upload your CV/Resume");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(cvFile);
+
+      reader.onload = async () => {
+        const base64CV = reader.result as string;
+
+        const response = await fetch("/api/applications", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jobId: job?.id, // Use the actual ObjectId from the fetched job
+            name: formData.fullName,
+            email: formData.email,
+            phone: formData.phone,
+            resume: base64CV,
+            coverLetter: formData.coverLetter,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setSubmitted(true);
+          toast.success("Application submitted successfully!");
+
+          // Reset form after 3 seconds
+          setTimeout(() => {
+            setFormData({
+              fullName: "",
+              email: "",
+              phone: "",
+              linkedIn: "",
+              portfolio: "",
+              coverLetter: "",
+            });
+            setCvFile(null);
+            setSubmitted(false);
+            router.push("/apply");
+          }, 3000);
+        } else {
+          toast.error(data.message || "Failed to submit application");
+        }
+      };
+
+      reader.onerror = () => {
+        toast.error("Failed to read CV file");
+        setIsSubmitting(false);
+      };
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast.error("Failed to submit application");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  if (isLoadingJob) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="size-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Loading job details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!job) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg font-semibold mb-2">Job not found</p>
+          <Button asChild>
+            <Link href="/apply">View All Jobs</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900">
+    <div className="min-h-screen ">
       {/* Header */}
       <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
@@ -70,7 +193,9 @@ export default function JobApplicationPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-bold">Apply for {job.title}</h1>
-            <p className="text-sm text-muted-foreground">{job.department}</p>
+            <p className="text-sm text-muted-foreground">
+              {job.location} • {job.type}
+            </p>
           </div>
         </div>
       </header>
@@ -130,20 +255,7 @@ export default function JobApplicationPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="experience">Years of Experience *</Label>
-                <Input
-                  id="experience"
-                  name="experience"
-                  type="text"
-                  placeholder="e.g., 3 years"
-                  value={formData.experience}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="linkedIn">LinkedIn Profile</Label>
+                <Label htmlFor="linkedIn">LinkedIn Profile (Optional)</Label>
                 <Input
                   id="linkedIn"
                   name="linkedIn"
@@ -155,7 +267,7 @@ export default function JobApplicationPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="portfolio">Portfolio/GitHub</Label>
+                <Label htmlFor="portfolio">Portfolio/GitHub (Optional)</Label>
                 <Input
                   id="portfolio"
                   name="portfolio"
@@ -164,6 +276,12 @@ export default function JobApplicationPage() {
                   value={formData.portfolio}
                   onChange={handleInputChange}
                 />
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <p className="text-sm text-blue-900 dark:text-blue-100">
+                  <strong>Required Experience:</strong> {job.experience}
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -206,12 +324,17 @@ export default function JobApplicationPage() {
               <Button
                 type="submit"
                 className="w-full shadow-[0_4px_0_#000] active:translate-y-[2px] active:shadow-[0_2px_0_#000]"
-                disabled={submitted}
+                disabled={isSubmitting || submitted}
               >
                 {submitted ? (
                   <>
                     <CheckCircle2 className="size-4 mr-2" />
                     Application Submitted!
+                  </>
+                ) : isSubmitting ? (
+                  <>
+                    <Loader2 className="size-4 mr-2 animate-spin" />
+                    Submitting...
                   </>
                 ) : (
                   <>
@@ -232,7 +355,7 @@ export default function JobApplicationPage() {
             {/* FAANG CV Priority Notice */}
             <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 border border-neutral-200 dark:border-neutral-800">
               <h3 className="text-lg font-bold mb-3">CV Guidelines</h3>
-              <div 
+              <div
                 className="relative w-full h-48 mb-4 rounded-lg overflow-hidden cursor-pointer group"
                 onClick={() => setImageZoomed(true)}
               >
@@ -250,9 +373,7 @@ export default function JobApplicationPage() {
                 <p className="font-medium text-foreground">
                   ⭐ FAANG-style CVs will be prioritized
                 </p>
-                <p>
-                  We prefer clean, professional resumes that highlight:
-                </p>
+                <p>We prefer clean, professional resumes that highlight:</p>
                 <ul className="list-disc list-inside space-y-1 ml-2">
                   <li>Clear, quantifiable achievements</li>
                   <li>Technical skills and proficiencies</li>
@@ -272,8 +393,13 @@ export default function JobApplicationPage() {
                     1
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Application Review</p>
-                    <p>Our team will review your application within 3-5 business days</p>
+                    <p className="font-medium text-foreground">
+                      Application Review
+                    </p>
+                    <p>
+                      Our team will review your application within 3-5 business
+                      days
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
@@ -281,8 +407,13 @@ export default function JobApplicationPage() {
                     2
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Initial Screening</p>
-                    <p>Shortlisted candidates will be contacted for a phone screening</p>
+                    <p className="font-medium text-foreground">
+                      Initial Screening
+                    </p>
+                    <p>
+                      Shortlisted candidates will be contacted for a phone
+                      screening
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
@@ -290,7 +421,9 @@ export default function JobApplicationPage() {
                     3
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Technical Interview</p>
+                    <p className="font-medium text-foreground">
+                      Technical Interview
+                    </p>
                     <p>Technical assessment and team interviews</p>
                   </div>
                 </div>
@@ -299,7 +432,9 @@ export default function JobApplicationPage() {
                     4
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Final Decision</p>
+                    <p className="font-medium text-foreground">
+                      Final Decision
+                    </p>
                     <p>Offer letter for successful candidates</p>
                   </div>
                 </div>
@@ -313,7 +448,10 @@ export default function JobApplicationPage() {
                 <p>If you have any questions about the application process:</p>
                 <p className="flex items-center gap-2">
                   <span>📧</span>
-                  <a href="mailto:careers@synctom.com" className="text-primary hover:underline">
+                  <a
+                    href="mailto:careers@synctom.com"
+                    className="text-primary hover:underline"
+                  >
                     careers@synctom.com
                   </a>
                 </p>
